@@ -94,4 +94,4 @@ backup:
     theme: next
     repository:
        github: git@github.com:yujinzheng/hexoback.github.io.git,master
-       gitcafe: git@github.com:yujinzheng/hexoback.github.io.git,master
+       #gitcafe: git@github.com:yujinzheng/hexoback.github.io.git,master
