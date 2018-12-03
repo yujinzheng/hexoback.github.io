@@ -15,7 +15,7 @@ timezone:
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
 url: http://yujinzheng.com
 root: /
-permalink: posts/:abbrlink/  # “posts/” 可自行更换
+permalink: :year/:month/:day/:title/
 permalink_defaults:
 
 # abbrlink config
