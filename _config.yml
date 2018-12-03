@@ -73,7 +73,7 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: next
+theme: next-reloaded
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
@@ -91,7 +91,12 @@ search:
   # 备份
 backup:
     type: git
-    theme: next
+    theme: next-reloaded
     repository:
        github: git@github.com:yujinzheng/hexoback.github.io.git,master
        #gitcafe: git@github.com:yujinzheng/hexoback.github.io.git,master
+       
+# Security
+##
+encrypt:
+    enable: true
