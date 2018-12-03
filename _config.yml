@@ -15,8 +15,13 @@ timezone:
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
 url: http://yujinzheng.com
 root: /
-permalink: :year/:month/:day/:title/
+permalink: posts/:abbrlink/  # “posts/” 可自行更换
 permalink_defaults:
+
+# abbrlink config
+abbrlink:
+  alg: crc32  # 算法：crc16(default) and crc32 
+  rep: hex    # 进制：dec(default) and hex
 
 # Directory
 source_dir: source
@@ -100,3 +105,11 @@ backup:
 ##
 encrypt:
     enable: true
+    
+symbols_count_time:
+ #文章内是否显示
+  symbols: true
+  time: true
+ # 网页底部是否显示
+  total_symbols: true
+  total_time: true

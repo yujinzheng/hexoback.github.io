@@ -241,7 +241,7 @@
                   <span class="post-meta-item-text">{{ __('symbols_count_time.count') + __('symbol.colon') }}</span>
                 {% endif %}
                 <span title="{{ __('symbols_count_time.count') }}">{#
-                #}{{ symbolsCount(post.content) }}{#
+                #}{{ symbolsCount(post.content) }}字{#
               #}</span>
               {% endif %}
 
@@ -257,7 +257,7 @@
                   <span class="post-meta-item-text">{{ __('symbols_count_time.time') }} &asymp;</span>
                 {% endif %}
                 <span title="{{ __('symbols_count_time.time') }}">{#
-                #}{{ symbolsTime(post.content, theme.symbols_count_time.awl, theme.symbols_count_time.wpm, __('symbols_count_time.time_minutes')) }}{#
+                #}{{ symbolsTime(post.content, theme.symbols_count_time.awl, theme.symbols_count_time.wpm, __('symbols_count_time.time_minutes')) }}分钟{#
               #}</span>
               {% endif %}
             </div>
