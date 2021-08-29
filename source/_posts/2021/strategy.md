@@ -10,9 +10,11 @@ categories:
 
 ## 设计模式的定义与特点
 
-在现实生活中，我们经常遇到实现目标存在多种策略可供选择的场景，比如出行的时候可以步行、乘公交、乘地跌、自驾等，付款时可以选择现金支付、支付宝支付、微信支付等。
+在现实生活中，我们经常遇到实现目标存在多种策略可供选择的场景，比如出行的时候可以步行、乘公交、乘地铁、自驾等，付款时可以选择现金支付、支付宝支付、微信支付等。
 
 在软件开发中叶经常遇到类似的情况，某种方案的实现可以采用多种算法或策略，我们可以根据实际情况采取不同的算法或策略来完成功能。如果我们使用条件语句来选择策略或算法，那么每当策略变更时，我们可能都会面临原代码的修改，不利于代码的维护，也违背了“软件对扩展开放，对修改关闭”的设计原则，因此，我们引入了**策略模式**。
+
+<!-- more --> 
 
 **定义**：策略模式定义了一系列算法，并将每个算法封装起来，让它们之间可以互相替换，此模式让算法的变化独立于使用算法的客户。
 
@@ -108,142 +110,63 @@ public class Context {
 
 ### 策略模式的实例
 
-**策略模式在LOL中配置装备的应用**
+**丁一的奇妙冒险**
 
-分析：LOL中有很多装备，不同的装备存在不同的效果，我们以英雄使用装备为例，介绍策略模式的应用。
+背景：丁一是一个平平无奇的程序员，有一天他在加班时，鼠标神奇地被雷劈了，从此他就拥有了使用鼠标穿越的能力，当他点击鼠标左键时，他就会魂穿，当他点击鼠标右键时，他就会身穿，当他点击滚轮时，他就半身穿（比如穿越成半人马），当然，不排除还有更多的穿越模式，只是丁一暂时还没发现而已，作为平平无奇的程序猿，丁一想到了用策略模式来描述自己的穿越能力。
 
-首先，定义一个装备效果的接口(EquipmentEffect)，里面包含了一个装备生效的抽象方法 takeEffect()；然后，定义装备（Equipment）类及其两个子类：饮血剑（Bloodthirster）类和无尽之刃（InfinityEdge）类，子类实现了接口中的方法；最后，定义一个装备槽（EquipmentSlot）环境类，它具有设置和选择武器效果的方法：英雄通过装备槽获取装备效果。
+首先，定义一个穿越策略的接口（TraversalStrategy），里面包含了一个穿越方案的抽象方法startTraversal()；然后，定义一系列穿越策略，比如身穿（BodyTraversal）类、魂穿（SoulTraversal）类、半身穿（HalfBodyTraversal）类；最后，定义环境上下文，在这里就是丁一的鼠标（Mouse），丁一通过鼠标来触发穿越策略。
 
 程序代码如下：
 
 ```java
 public class Main {
     public static void main(String[] args) {
-        Hero jax = new Hero("武器大师", 68, 10d, 20d);
-        jax.showAttribute();
-        jax.addEquipment(new Bloodthirster());
-        jax.showAttribute();
-        jax.addEquipment(new InfinityEdge());
-        jax.showAttribute();
+        Mouse mouse = new Mouse();
+        System.out.println("我是丁一，我今天准备使用鼠标进行穿越");
+        mouse.setTraversalStrategy(new BodyTraversal());
+        mouse.startTraversal();
+        mouse.setTraversalStrategy(new SoulTraversal());
+        mouse.startTraversal();
+        mouse.setTraversalStrategy(new HalfBodyTraversal());
+        mouse.startTraversal();
     }
 }
 
-public interface EquipmentEffect {
-    public void takeEffect(Hero hero);
+public interface TraversalStrategy {
+    public void startTraversal();
 }
 
-public class Equipment {
-    private final String name;
-
-    public Equipment(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
+public class BodyTraversal implements TraversalStrategy{
+    public void startTraversal() {
+        System.out.println("触发了身穿，整个人都穿越啦");
     }
 }
 
-public class Bloodthirster extends Equipment  implements EquipmentEffect{
-    private int effectAttackPower;
-    private double effectCrit;
-    private double effectLifeSteal;
-
-    public Bloodthirster() {
-        super("饮血剑");
-    }
-
-    public void takeEffect(Hero hero) {
-        effectAttackPower = 55;
-        hero.setAttackPower(hero.getAttackPower() + effectAttackPower);
-        effectCrit = 20;
-        hero.setCrit(hero.getCrit() + effectCrit);
-        effectLifeSteal = 20;
-        hero.setLifeSteal(hero.getLifeSteal() + effectLifeSteal);
+public class HalfBodyTraversal implements TraversalStrategy{
+    public void startTraversal() {
+        System.out.println("触发了半身穿，只有一半的身体穿越啦");
     }
 }
 
-public class InfinityEdge extends Equipment implements EquipmentEffect{
-    private int effectAttackPower;
-    private double effectCrit;
-
-    public InfinityEdge() {
-        super("无尽之刃");
-    }
-
-    public void takeEffect(Hero hero) {
-        effectAttackPower = 70;
-        hero.setAttackPower(hero.getAttackPower() + effectAttackPower);
-        double crit = hero.getCrit();
-        if(crit > 60) {
-            effectCrit = 35;
-        } else {
-            effectCrit = 20;
-        }
-        hero.setCrit(hero.getCrit() + effectCrit);
+public class SoulTraversal implements TraversalStrategy{
+    public void startTraversal() {
+        System.out.println("触发了魂穿，只有灵魂穿越啦");
     }
 }
 
-public class Hero {
-    private final String name;
-    private int attackPower;
-    private double lifeSteal;
-    private double crit;
-    private EquipmentSlot equipmentSlot = new EquipmentSlot();
+public class Mouse {
+    TraversalStrategy traversalStrategy;
 
-    public Hero(String name) {
-        this.name = name;
+    public void startTraversal() {
+        traversalStrategy.startTraversal();
     }
 
-    public Hero(String name, int attackPower, double lifeSteal, double crit) {
-        this.name = name;
-        this.attackPower = attackPower;
-        this.lifeSteal = lifeSteal;
-        this.crit = crit;
+    public void setTraversalStrategy(TraversalStrategy traversalStrategy) {
+        this.traversalStrategy = traversalStrategy;
     }
 
-    public void addEquipment(Equipment equipment) {
-        equipmentSlot.setEquipmentEffect((EquipmentEffect) equipment);
-        equipmentSlot.takeEffect(this);
-    }
-
-    public void showAttribute() {
-        System.out.println("我是" + name + "，我的属性信息如下：");
-        System.out.println("攻击力：" + attackPower);
-        System.out.println("暴击：" + crit + "%");
-        System.out.println("吸血：" + lifeSteal + "%\r\n");
-    }
-
-    public int getAttackPower() {
-        return attackPower;
-    }
-
-    public void setAttackPower(int attackPower) {
-        this.attackPower = attackPower;
-    }
-
-    public double getCrit() {
-        return crit;
-    }
-
-    public void setCrit(double crit) {
-        this.crit = crit;
-    }
-
-    public double getLifeSteal() {
-        return lifeSteal;
-    }
-
-    public void setLifeSteal(double lifeSteal) {
-        this.lifeSteal = lifeSteal;
-    }
-
-    public EquipmentSlot getEquipmentSlot() {
-        return equipmentSlot;
-    }
-
-    public void setEquipmentSlot(EquipmentSlot equipmentSlot) {
-        this.equipmentSlot = equipmentSlot;
+    public TraversalStrategy getTraversalStrategy() {
+        return traversalStrategy;
     }
 }
 
@@ -252,23 +175,13 @@ public class Hero {
 程序输出结果如下：
 
 ```text
-我是武器大师，我的属性信息如下：
-攻击力：68
-暴击：20.0%
-吸血：10.0%
-
-我是武器大师，我的属性信息如下：
-攻击力：123
-暴击：40.0%
-吸血：30.0%
-
-我是武器大师，我的属性信息如下：
-攻击力：193
-暴击：60.0%
-吸血：30.0%
+我是丁一，我今天准备使用鼠标进行穿越
+触发了身穿，整个人都穿越啦
+触发了魂穿，只有灵魂穿越啦
+触发了半身穿，只有一半的身体穿越啦
 ```
 
-从上面的例子中我们可以看到，如果要新增武器，只需要新增武器类而无需修改英雄和武器槽类，使得代码更加灵活，然而，每种武器都要有自己的策略，后续可能会产生许多策略类，导致维护困难。
+从上面的例子中我们可以看到，如果丁一发现了新的穿越方式，那么就只需要新增穿越策略，而无需对他的鼠标进行修改，使得代码更加灵活。然而，如果丁一脑洞过大，发现了很多的穿越模式，那么不仅每种穿越模式需要一个策略，他本人也必须了解所有的穿越模式，这样会导致维护变得困难。
 
 ### 策略模式的应用场景
 
