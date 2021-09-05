@@ -46,7 +46,7 @@ post_asset_folder: true
 relative_link: false
 future: true
 highlight:
-  enable: true
+  enable: false
   line_number: true
   auto_detect: true
   tab_replace: ''
@@ -134,3 +134,6 @@ symbols_count_time:
  # 网页底部是否显示
   total_symbols: true
   total_time: true
+
+marked:
+  langPrefix: line-numbers language-
